@@ -55,6 +55,7 @@ public class Juego extends InterfaceJuego
                 contador++;
             }
         }
+        
 
         // Creamos plantas
         this.planta = new Planta(50, 300, 40, 60);
