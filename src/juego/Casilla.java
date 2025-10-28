@@ -22,7 +22,7 @@ public class Casilla {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.angulo = 0;
-		this.escala = 1;
+		this.escala = 1.2;
 		this.estaOcupada = false;
 		this.tieneRegalo = tieneRegalo;
         this.imagenFondo = Herramientas.cargarImagen(imagenFondo);

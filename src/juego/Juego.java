@@ -33,7 +33,7 @@ public class Juego extends InterfaceJuego
 		this.avataresPlantas = new PlantaAvatar[2];
 		for(int i = 0; i < this.avataresPlantas.length; i++){
             boolean isRoseBlade = i == 0;
-            this.avataresPlantas[i] = new PlantaAvatar(55 + 120*i, 60, 50, 50, isRoseBlade ? "roseblade.jpg" : "wallnut.jpg");
+            this.avataresPlantas[i] = new PlantaAvatar(20 + 120*i, 60, 50, 50, isRoseBlade ? "roseblade.jpg" : "wallnut.jpg");
         }
 
         // Creamos zombies
@@ -50,7 +50,8 @@ public class Juego extends InterfaceJuego
                 boolean imparFila = i%2 == 1;
                 boolean imparColumna = j%2 == 1;
                 boolean isRegalo = j == 0;
-                this.casillasTablero[contador] = new Casilla(60 + 120*j, 270 + 120*i, 180, 180, false, isRegalo, "casilla"+(imparFila ? "clara" : "oscura")+(imparColumna ? "2" : "1")+".png");
+                // Casilla (x,y,ancho,alto,angulo,escala,ocupada,tieneRegalo,imagenFondo)
+                this.casillasTablero[contador] = new Casilla(220 + 120*j, 270 + 120*i, 120, 120, false, isRegalo, "casilla"+(imparFila ? "clara" : "oscura")+(imparColumna ? "2" : "1")+".png");
                 contador++;
             }
         }
@@ -73,10 +74,10 @@ public class Juego extends InterfaceJuego
 		TiempoDeJuego= sec;
 
 		//Dibujamos imagen de fondo (x,y,angulo,escala)
-        this.entorno.dibujarImagen(backgroundImage, 50, 1000, 0, 1);
+        this.entorno.dibujarImagen(backgroundImage, 840,530, 0, 1.25);
 
         // Dibujamos seccion superior (x, y, ancho, alto, angulo, color)
-        this.entorno.dibujarRectangulo(0,0,3200,250,0,Color.LIGHT_GRAY);
+        this.entorno.dibujarRectangulo(0,0,3200,350,0,Color.LIGHT_GRAY);
 
 		// Seteamos y escribimos textos
 		Color miColor = new Color (255, 204, 0);
