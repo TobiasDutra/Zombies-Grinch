@@ -19,6 +19,7 @@ public class Juego extends InterfaceJuego
     Casilla[] casillasTablero;
 	PlantaAvatar[] avataresPlantas;
 	ZombieAvatar[] avataresZombies;
+    GestorZombies gestorZombies;
     private int ContadorPlantas = 0;
     private int ZombiesEliminados = 0;
     private int ZombiesRestantes = 100;
@@ -46,10 +47,11 @@ public class Juego extends InterfaceJuego
         }
 
         // Creamos zombies
-        this.zombies = new Zombie[5];
-        for(int i = 0; i < this.zombies.length; i++){
-            this.zombies[i] = new Zombie(1360, 300 + 130*i, 60, 60, Math.random()+0.1);
-        }
+        //this.zombies = new Zombie[5];
+        //for(int i = 0; i < this.zombies.length; i++){
+        //    this.zombies[i] = new Zombie(1360, 300 + 130*i, 60, 60, Math.random()+0.1);
+        //}
+        gestorZombies = new GestorZombies(50);
 
         // Creamos casillas
         this.casillasTablero = new Casilla[45];
@@ -59,7 +61,7 @@ public class Juego extends InterfaceJuego
                 boolean imparFila = i%2 == 1;
                 boolean imparColumna = j%2 == 1;
                 boolean isRegalo = j == 0;
-                this.casillasTablero[contador] = new Casilla(contador, 220 + 100*j, 270 + 100*i, 100, 100, false, isRegalo, "casilla"+(imparFila ? "clara" : "oscura")+(imparColumna ? "2" : "1")+".png");
+                this.casillasTablero[contador] = new Casilla(contador, 320 + 100*j, 310 + 100*i, 150, 150, false, isRegalo, "casilla"+(imparFila ? "clara" : "oscura")+(imparColumna ? "2" : "1")+".png");
                 contador++;
             }
         }
@@ -78,10 +80,11 @@ public class Juego extends InterfaceJuego
         this.entorno.dibujarImagen(backgroundImage, 840, 530, 0, 1.25);
 
         // Dibujamos seccion superior (x, y, ancho, alto, angulo, color)
-        this.entorno.dibujarRectangulo(0, 0, 3200, 350, 0, Color.LIGHT_GRAY);
+        Color miColor = new Color(255, 150, 46);
+        this.entorno.dibujarRectangulo(0, 0, 3200, 350, 0, miColor);
 
         // Seteamos y escribimos textos
-        Color miColor = new Color(255, 204, 0);
+        
         this.entorno.cambiarFont("Constantia", 18, miColor, entorno.NEGRITA);
         this.entorno.escribirTexto("ELIMINADOS: " + ZombiesEliminados, 600, 30);
         this.entorno.escribirTexto("RESTANTES: " + ZombiesRestantes, 600, 60);
@@ -235,10 +238,11 @@ public class Juego extends InterfaceJuego
         }
 
         // Dibujamos y movemos zombies
-        for (int i = 0; i < this.zombies.length; i++) {
-            this.zombies[i].mover();
-            this.zombies[i].dibujar(this.entorno);
-        }
+        //for (int i = 0; i < this.zombies.length; i++) {
+        //    this.zombies[i].mover();
+        //    this.zombies[i].dibujar(this.entorno);
+        //}
+        gestorZombies.actualizar(entorno);
 
         // Dibujamos bolas de fuego
         if (this.entorno.sePresiono(this.entorno.TECLA_ESPACIO)) {
