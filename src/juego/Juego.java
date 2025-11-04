@@ -14,7 +14,7 @@ public class Juego extends InterfaceJuego
     private Entorno entorno;
     private HUD hud;
     private Tablero tablero;
-    private PlantaAvatar plantaAvatar;
+    private GestorPlantas gestorPlantas;
 
     // Variables
     Zombie[] zombies;
@@ -46,6 +46,7 @@ public class Juego extends InterfaceJuego
             this.avataresPlantas[i] = new PlantaAvatar(isRoseBlade ? "RoseBlade" : "WallNut", 60 + 120*i, 60, 100, 100);
             ContadorPlantas++;
         }
+		this.gestorPlantas = new GestorPlantas(this.avataresPlantas);
 
         // Creamos Avatares de zombies
 		this.avataresZombies = new ZombieAvatar[1];
@@ -234,23 +235,18 @@ public class Juego extends InterfaceJuego
         }
 
         // Dibujamos avatares de plantas
-        for (int i = 0; i < this.avataresPlantas.length; i++) {
-            if (avataresPlantas[i] != null) {
-                this.avataresPlantas[i].dibujar(this.entorno);
-            }
-        }
+        gestorPlantas.dibujarPlantas(entorno);
 
         // Dibujamos avatares de zombies
-        for (int i = 0; i < this.avataresZombies.length; i++) {
-            this.avataresZombies[i].dibujar(this.entorno);
+        for (ZombieAvatar zombie : avataresZombies) {
+            zombie.dibujar(entorno);
         }
 
-
         // Dibujamos bolas de fuego
-        if (this.entorno.sePresiono(this.entorno.TECLA_ESPACIO)) {
-            for (int i = 0; i < this.avataresPlantas.length; i++) {
-                if (avataresPlantas[i] != null && avataresPlantas[i].estaEnJuego && avataresPlantas[i].tipoPlanta == "RoseBlade") {
-                    this.avataresPlantas[i].disparar();
+        if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+            for (PlantaAvatar planta : avataresPlantas) {
+                if (planta != null && planta.estaEnJuego && planta.tipoPlanta.equals("RoseBlade")) {
+                    planta.disparar();
                 }
             }
         }

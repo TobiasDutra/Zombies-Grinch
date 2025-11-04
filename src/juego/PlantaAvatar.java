@@ -13,8 +13,8 @@ public class PlantaAvatar {
     public double initialY;
     public double initialX;
 
-	private int ancho;
-	private int alto;
+	public int ancho;
+	public int alto;
     private double angulo;
     private double escala;
 
