@@ -6,10 +6,10 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class BolaDeFuego {
-	private double x;
-	private double y;
-	private int ancho;
-	private int alto;
+	public double x;
+	public double y;
+	public int ancho;
+	public int alto;
 	private double velocidad;
 
     public Image imagen;

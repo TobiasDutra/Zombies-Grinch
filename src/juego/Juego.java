@@ -55,7 +55,7 @@ public class Juego extends InterfaceJuego
         }
 
         // Creamos zombies
-        gestorZombies = new GestorZombies(50);
+        this.gestorZombies = new GestorZombies(50);
 
         // Creamos casillas
         this.casillasTablero = new Casilla[45];
