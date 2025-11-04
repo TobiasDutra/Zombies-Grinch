@@ -88,6 +88,23 @@ public class Juego extends InterfaceJuego
         // Dibujamos y movemos zombies
         gestorZombies.actualizar(entorno);
 
+        // Dibujamos avatares de plantas
+        gestorPlantas.dibujarPlantas(entorno);
+
+        // Dibujamos avatares de zombies
+        for (ZombieAvatar zombie : avataresZombies) {
+            zombie.dibujar(entorno);
+        }
+
+        // Dibujamos bolas de fuego
+        if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+            for (PlantaAvatar planta : avataresPlantas) {
+                if (planta != null && planta.estaEnJuego && planta.tipoPlanta.equals("RoseBlade")) {
+                    planta.disparar();
+                }
+            }
+        }
+
         // Detectamos los click izquierdo y deseleccionamos todo
         if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
             boolean clicEnPlanta = false;
@@ -234,22 +251,7 @@ public class Juego extends InterfaceJuego
             }
         }
 
-        // Dibujamos avatares de plantas
-        gestorPlantas.dibujarPlantas(entorno);
-
-        // Dibujamos avatares de zombies
-        for (ZombieAvatar zombie : avataresZombies) {
-            zombie.dibujar(entorno);
-        }
-
-        // Dibujamos bolas de fuego
-        if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-            for (PlantaAvatar planta : avataresPlantas) {
-                if (planta != null && planta.estaEnJuego && planta.tipoPlanta.equals("RoseBlade")) {
-                    planta.disparar();
-                }
-            }
-        }
+        
 
     }
 
