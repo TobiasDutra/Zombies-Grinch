@@ -61,6 +61,7 @@ public class PlantaAvatar {
 		this.counterLife = tipoPlanta == "RoseBlade" ? 50 : 100;
 	}
 
+
 	public boolean getEstaDisponible() {
 		return this.estaDisponible;
 	}

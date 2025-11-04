@@ -18,21 +18,17 @@ public class ZombieAvatar {
 	
 	
 	public ZombieAvatar(int x, int y, int ancho, int alto) {
+        this.imagen = Herramientas.cargarImagen("zombiegrinch.jpg");
 		this.x = x;
 		this.y = y;
-
-		this.ancho = ancho;
-		this.alto = alto;
 		this.angulo = 0;
 		this.escala = 1;
 
-		
-        this.imagen = Herramientas.cargarImagen("zombiegrinch.jpg");
+		this.ancho = ancho;
+		this.alto = alto;
 	}
 
 	public void dibujar(Entorno entorno){
 			entorno.dibujarImagen(this.imagen, this.x, this.y, this.angulo, this.escala);
 	}
-
-
 }

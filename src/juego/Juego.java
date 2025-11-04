@@ -12,6 +12,9 @@ public class Juego extends InterfaceJuego
 {
     // El objeto Entorno que controla el tiempo y otros
     private Entorno entorno;
+    private HUD hud;
+    private Tablero tablero;
+    private PlantaAvatar plantaAvatar;
 
     // Variables
     Zombie[] zombies;
@@ -20,17 +23,21 @@ public class Juego extends InterfaceJuego
 	PlantaAvatar[] avataresPlantas;
 	ZombieAvatar[] avataresZombies;
     GestorZombies gestorZombies;
+    
     private int ContadorPlantas = 0;
-    private int ZombiesEliminados = 0;
-    private int ZombiesRestantes = 100;
-    private int TiempoDeJuego = 0;
-	private Image backgroundImage = Herramientas.cargarImagen("Frontyard.jpg");
+    private int zombiesEliminados = 0;
+    private int zombiesRestantes = 100;
+    private int tiempoDeJuego = 0;
 
 
     Juego()
     {
         // Inicializa el objeto entorno
         this.entorno = new Entorno(this, "La Invasión de los Zombies Grinch", 1260, 900);
+
+        this.hud = new HUD(entorno);
+        this.tablero = new Tablero(5, 9, 320, 310, 150);
+        //this.avataresPlantas = new PlantaAvatar[100];
 
 		// Creamos Avatares de plantas
 		this.avataresPlantas = new PlantaAvatar[100];
@@ -47,10 +54,6 @@ public class Juego extends InterfaceJuego
         }
 
         // Creamos zombies
-        //this.zombies = new Zombie[5];
-        //for(int i = 0; i < this.zombies.length; i++){
-        //    this.zombies[i] = new Zombie(1360, 300 + 130*i, 60, 60, Math.random()+0.1);
-        //}
         gestorZombies = new GestorZombies(50);
 
         // Creamos casillas
@@ -72,28 +75,17 @@ public class Juego extends InterfaceJuego
     }
 
     public void tick() {
-        //Tiempo
-        int sec = entorno.tiempo() / 1000;
-        TiempoDeJuego = sec;
 
-        //Dibujamos imagen de fondo (imagen, x, y, angulo, escala)
-        this.entorno.dibujarImagen(backgroundImage, 840, 530, 0, 1.25);
+    	actualizarTiempoDeJuego();
+    	
+        hud.dibujarFondo();
+        hud.dibujar(zombiesEliminados, zombiesRestantes, tiempoDeJuego);
 
-        // Dibujamos seccion superior (x, y, ancho, alto, angulo, color)
-        Color miColor = new Color(255, 150, 46);
-        this.entorno.dibujarRectangulo(0, 0, 3200, 350, 0, miColor);
 
-        // Seteamos y escribimos textos
-        
-        this.entorno.cambiarFont("Constantia", 18, miColor, entorno.NEGRITA);
-        this.entorno.escribirTexto("ELIMINADOS: " + ZombiesEliminados, 600, 30);
-        this.entorno.escribirTexto("RESTANTES: " + ZombiesRestantes, 600, 60);
-        this.entorno.escribirTexto("TIEMPO DE JUEGO: " + TiempoDeJuego + " S.", 600, 90);
+        tablero.dibujar(entorno);
 
-        // Dibujamos casillas
-        for (int i = 0; i < this.casillasTablero.length; i++) {
-            this.casillasTablero[i].dibujar(this.entorno);
-        }
+        // Dibujamos y movemos zombies
+        gestorZombies.actualizar(entorno);
 
         // Detectamos los click izquierdo y deseleccionamos todo
         if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
@@ -224,35 +216,6 @@ public class Juego extends InterfaceJuego
             }
         }
 
-
-        // Dibujamos avatares de plantas
-        for (int i = 0; i < this.avataresPlantas.length; i++) {
-            if (avataresPlantas[i] != null) {
-                this.avataresPlantas[i].dibujar(this.entorno);
-            }
-        }
-
-        // Dibujamos avatares de zombies
-        for (int i = 0; i < this.avataresZombies.length; i++) {
-            this.avataresZombies[i].dibujar(this.entorno);
-        }
-
-        // Dibujamos y movemos zombies
-        //for (int i = 0; i < this.zombies.length; i++) {
-        //    this.zombies[i].mover();
-        //    this.zombies[i].dibujar(this.entorno);
-        //}
-        gestorZombies.actualizar(entorno);
-
-        // Dibujamos bolas de fuego
-        if (this.entorno.sePresiono(this.entorno.TECLA_ESPACIO)) {
-            for (int i = 0; i < this.avataresPlantas.length; i++) {
-                if (avataresPlantas[i] != null && avataresPlantas[i].estaEnJuego && avataresPlantas[i].tipoPlanta == "RoseBlade") {
-                    this.avataresPlantas[i].disparar();
-                }
-            }
-        }
-
         for (int i = 0; i < this.avataresPlantas.length; i++) {
             if (avataresPlantas[i] != null) {
                 for (int j = 0; j < this.avataresPlantas[i].bolasDeFuego.length; j++) {
@@ -266,6 +229,28 @@ public class Juego extends InterfaceJuego
                             this.avataresPlantas[i].bolasDeFuego[j] = null;
                         }
                     }
+                }
+            }
+        }
+
+        // Dibujamos avatares de plantas
+        for (int i = 0; i < this.avataresPlantas.length; i++) {
+            if (avataresPlantas[i] != null) {
+                this.avataresPlantas[i].dibujar(this.entorno);
+            }
+        }
+
+        // Dibujamos avatares de zombies
+        for (int i = 0; i < this.avataresZombies.length; i++) {
+            this.avataresZombies[i].dibujar(this.entorno);
+        }
+
+
+        // Dibujamos bolas de fuego
+        if (this.entorno.sePresiono(this.entorno.TECLA_ESPACIO)) {
+            for (int i = 0; i < this.avataresPlantas.length; i++) {
+                if (avataresPlantas[i] != null && avataresPlantas[i].estaEnJuego && avataresPlantas[i].tipoPlanta == "RoseBlade") {
+                    this.avataresPlantas[i].disparar();
                 }
             }
         }
@@ -350,5 +335,8 @@ public class Juego extends InterfaceJuego
         this.avataresPlantas[indice].casillaId = nuevaCas.id;
     }
 
+    private void actualizarTiempoDeJuego() {
+        tiempoDeJuego = entorno.tiempo() / 1000;
+    }
 
 }
